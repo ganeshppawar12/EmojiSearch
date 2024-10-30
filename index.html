@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Me</title>
+    <link href="https://fonts.cdnfonts.com/css/futura-std-4" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .searchContainer {
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            background-color: burlywood;
+        }
+        .serachBar {
+            background-color: rgb(35, 35, 39);
+            max-width: 350px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 0.5px solid rgb(208, 208, 208);
+            border-radius: 20px;
+            padding: 0 10px;
+        }
+        .serachBar input {
+            width: 90%;
+            background-color: rgb(35, 35, 39);
+            color: #fff;
+            outline: none;
+            border: none;
+            padding: 5px;
+        }
+        .emoji {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 40px;
+        }
+        .emoji p {
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        i {
+            color: #fff;
+        }
+    </style>
+
+    <div class="searchContainer">
+        <div class="serachBar">
+            <input id="searchInput" type="text" placeholder="Search emoji..." />
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </div>
+
+    <div class="emoji" id="emoji"></div>
+
+    <script type="module">
+        import { emojiList } from './emoji.js';
+
+        const emojis = document.getElementById('emoji');
+        const searchInput = document.getElementById('searchInput');
+
+        // Function to display emojis
+        function displayEmojis(emojiArray) {
+            emojis.innerHTML = emojiArray.map(ele => `<p>${ele.emoji}</p>`).join('');
+        }
+
+        // Display all emojis on initial load
+        displayEmojis(emojiList);
+
+        searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    // Filter emojis based on search term
+    const filteredEmojis = emojiList.filter(emoji =>
+        emoji.description.toLowerCase().includes(searchTerm) ||
+        emoji.aliases.some(alias => alias.toLowerCase().startsWith(searchTerm)) ||
+        emoji.tags.some(tag => tag.toLowerCase().startsWith(searchTerm))
+    );
+
+    // Display filtered emojis
+    displayEmojis(filteredEmojis);
+});
+    </script>
+</body>
+</html>
